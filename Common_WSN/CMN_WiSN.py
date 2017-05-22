@@ -99,7 +99,7 @@ url='http://140.112.94.128:20000/PEST_DETECT/PEST_IMAGES/RX_IMG.php?node='+node+
 camera = PiCamera()
 camera.resolution = (3280,2464)
 camera.framerate = 15
-camera.rotation = 0
+camera.rotation = 180
 camera.awb_mode = 'auto'
 camera.drc_strength = 'high'
 

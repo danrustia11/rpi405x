@@ -51,8 +51,8 @@ db = "10"
 node = "1"
 
 #location
-location = "CHIAYI"
-location_cam = "CHIAYI"+"_"+db
+location = "CHIAYI_GH"
+location_cam = "CHIAYI_GH"+"_"+db
 
 #enable sensors
 s1=1
@@ -70,7 +70,7 @@ dhtg = Adafruit_DHT.AM2302
 dht_pin = 17
 
 #sending delay in seconds
-send_delay=10
+send_delay=360
 
 #################################
 # Do not touch the codes below! #

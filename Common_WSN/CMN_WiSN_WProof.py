@@ -209,7 +209,7 @@ while 1:
         # get sensor 1 data
         try:
             # read sensor data
-            temp, hum = Adafruit_DHT.read_retry(dhtg, dht_pin)
+            hum, temp= Adafruit_DHT.read_retry(dhtg, dht_pin)
 
             # round off to two decimal places
             temp="{0:.2f}".format(temp)

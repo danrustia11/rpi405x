@@ -233,7 +233,7 @@ while 1:
 
             # round off to two decimal places
             temp="{0:.2f}".format(temp)
-            We = "{0: .2f}". Format (we)
+            hum= "{0:.2f}".format(hum)
             if temp is not None and hum is not None:
                 _packet1a=db_code+":"+date_stamp+":"+node+":T:"+temp+":"+location+":"+db
                 _packet1b=db_code+":"+date_stamp+":"+node+":H:"+hum+":"+location+":"+db

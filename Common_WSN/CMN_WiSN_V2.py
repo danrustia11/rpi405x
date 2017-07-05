@@ -3,9 +3,10 @@
 #********************************#
 #********************************#
 #   Common platform WiSN program #
-#   by: Dan Jeric Arcega Rustia  #
+#    By: Dan Jeric Arcega Rustia #
 #                                #
 #   Log:                         #
+#   7/5/2017 - added CSV backup  #
 #   6/26/2017 - new program for  #
 #               waterproof design#
 #   5/22/2017 - removed com check#
@@ -38,6 +39,7 @@ import os
 #sensor libraries
 import Adafruit_DHT
 import smbus
+import csv
 
 #############Options##############
 
@@ -55,8 +57,8 @@ location = "CHIAYI_GH"
 location_cam = "CHIAYI_GH"+"_"+db
 
 #enable sensors
-s1=1
-s2=1
+s1 = 1
+s2 = 1
 
 #db codes where:
 #PD=Pest detect
@@ -71,6 +73,9 @@ dht_pin = 17
 
 #sending delay in seconds
 send_delay=360
+
+#csv backup filename
+csv_filename="SENSOR_"+location_cam+"_"+node+".csv"
 
 #################################
 # Do not touch the codes below! #
@@ -89,7 +94,7 @@ url='http://140.112.94.128:20000/PEST_DETECT/PEST_IMAGES/RX_IMG.php?node='+node+
 camera = PiCamera()
 camera.resolution = (3280,2464)
 camera.framerate = 15
-camera.rotation = 180
+camera.rotation = 0
 camera.awb_mode = 'auto'
 camera.drc_strength = 'high'
 
@@ -160,10 +165,25 @@ def getImage():
 print("PROGRAM START")
 print("TARGET IP:"+ip+" PORT:"+str(port_udp))
 print("DB CODE:"+db_code+" NODE#"+node)
+print("BACK-UP CSV:"+"SENSOR_"+location_cam+"_"+node+".csv")
+
+
+# Make back-up csv file
+fileexist = os.path.isfile(csv_filename)
+text=['DB_CODE','DATE','NODE','TYPE','VALUE','LOCATION','DB']
+
+if fileexist:      
+  print("BACK-UP CSV ALREADY EXISTS!")
+else:
+  file = open(csv_filename, 'w')
+  with open(csv_filename, 'ab') as csv_file:
+    writer = csv.writer(csv_file,delimiter=':')
+    writer.writerow(text)
+  
 send_timer=send_delay
 time.sleep(1)
 
-#os.system('./home/pi/RPi_Cam_Web_Interface/stop.sh')
+
 getImage()
 
 ##################
@@ -188,8 +208,8 @@ while 1:
     sec=d.strftime("%S")
 
     hr=int(hr)
-    mn=int(mn)
-    sec=int(sec)
+    mn = int (mn)
+    sec = int (sec)
     ###########################
 
     send_timer=send_timer+1
@@ -213,24 +233,32 @@ while 1:
 
             # round off to two decimal places
             temp="{0:.2f}".format(temp)
-            hum="{0:.2f}".format(hum)
+            We = "{0: .2f}". Format (we)
             if temp is not None and hum is not None:
                 _packet1a=db_code+":"+date_stamp+":"+node+":T:"+temp+":"+location+":"+db
                 _packet1b=db_code+":"+date_stamp+":"+node+":H:"+hum+":"+location+":"+db
                 print(_packet1a)
                 print(_packet1b)
-                    
+                text=[db_code,date_stamp,node,"T",temp,location,db]
+                text2=[db_code,date_stamp,node,"H",hum,location,db]                
+                with open(csv_filename, 'ab') as csv_file:
+                  writer = csv.writer(csv_file,delimiter=':')
+                  writer.writerow(text)
+                  writer.writerow(text2)    
         except:
             pass
         
             
         # get sensor 2 data
         try:
-            #read2 = txrx(sensor2)
             lux = readLight()
             lux = "{0:.2f}".format(lux)
             _packet2a=db_code+":"+date_stamp+":"+node+":L:"+lux+":"+location+":"+db
             print(_packet2a)
+            text=[db_code,date_stamp,node,"L",lux,location,db]        
+            with open(csv_filename, 'ab') as csv_file:
+              writer = csv.writer(csv_file,delimiter=':')
+              writer.writerow(text)
         except:
             pass
 

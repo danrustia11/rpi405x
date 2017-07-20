@@ -50,8 +50,10 @@ db_enable = 1
 #db number
 db = "2"
 
-#node number
-node = "2"
+#node number (get from .txt file)
+f = open('../../NODE_NUM.txt', 'r')
+node  = f.read()
+node_num = int(node)
 
 #location
 location = "CHIAYI_GH"
@@ -160,13 +162,14 @@ def getImage():
 	
 
 
-   
+    # Send udp packet to image rx program
+    # Sample: NODE3_2017,08,11 12,00,00:CHIAYI_GH:1:3
     dx=d.strftime("%Y_%m_%d %H_%M_%S")
     filename=dx+".jpg"
-    # Send udp packet to image rx program
     image_packet="NODE"+node+"_"+filename+":"+location+":"+node+":"+db+":"
-    #NODE3_2017,08,11 12,00,00:CHIAYI_GH:1:3
-    time.sleep(3)
+
+    # Delay depending on node number:
+    time.sleep(3*node_num)
     sock.sendto(image_packet, (ip,image_udp))
     print(image_packet)
 

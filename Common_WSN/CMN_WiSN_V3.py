@@ -51,7 +51,7 @@ db_enable = 1
 db = "2"
 
 #node number
-node = "1"
+node = "2"
 
 #location
 location = "CHIAYI_GH"
@@ -158,11 +158,17 @@ def getImage():
     r=requests.post(url,files=files)
     print(r.content)
 	
+
+
+   
+    dx=d.strftime("%Y_%m_%d %H_%M_%S")
+    filename=dx+".jpg"
     # Send udp packet to image rx program
-    image_packet="NODE"+node+"_"+filename+":"+location+":"+db+":"+node
+    image_packet="NODE"+node+"_"+filename+":"+location+":"+node+":"+db+":"
     #NODE3_2017,08,11 12,00,00:CHIAYI_GH:1:3
     time.sleep(3)
     sock.sendto(image_packet, (ip,image_udp))
+    print(image_packet)
 
 
 ##################
@@ -243,8 +249,8 @@ while 1:
             temp="{0:.2f}".format(temp)
             hum= "{0:.2f}".format(hum)
             if temp is not None and hum is not None:
-                _packet1a=db_code+":"+date_stamp+":"+node+":T:"+temp+":"+location+":"+db
-                _packet1b=db_code+":"+date_stamp+":"+node+":H:"+hum+":"+location+":"+db
+                _packet1a=db_code+":ENVI:"+date_stamp+":"+node+":T:"+temp+":"+location+":"+db
+                _packet1b=db_code+":ENVI:"+date_stamp+":"+node+":H:"+hum+":"+location+":"+db
                 print(_packet1a)
                 print(_packet1b)
                 text=[db_code,date_stamp,node,"T",temp,location,db]
@@ -261,7 +267,7 @@ while 1:
         try:
             lux = readLight()
             lux = "{0:.2f}".format(lux)
-            _packet2a=db_code+":"+date_stamp+":"+node+":L:"+lux+":"+location+":"+db
+            _packet2a=db_code+":ENVI:"+date_stamp+":"+node+":L:"+lux+":"+location+":"+db
             print(_packet2a)
             text=[db_code,date_stamp,node,"L",lux,location,db]        
             with open(csv_filename, 'ab') as csv_file:

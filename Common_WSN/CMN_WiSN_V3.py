@@ -158,12 +158,11 @@ def getImage():
     r=requests.post(url,files=files)
     print(r.content)
 	
-	
-	# Send udp packet to image rx program
-	image_packet="NODE"node+"_"+filename+":"+location+":"+db+":"+node
-	#NODE3_2017,08,11 12,00,00:CHIAYI_GH:1:3
-	time.sleep(3)
-	sock.sendto(image_packet, (ip,image_udp))
+    # Send udp packet to image rx program
+    image_packet="NODE"+node+"_"+filename+":"+location+":"+db+":"+node
+    #NODE3_2017,08,11 12,00,00:CHIAYI_GH:1:3
+    time.sleep(3)
+    sock.sendto(image_packet, (ip,image_udp))
 
 
 ##################

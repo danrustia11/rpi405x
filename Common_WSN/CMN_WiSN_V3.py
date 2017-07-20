@@ -51,7 +51,7 @@ db_enable = 1
 db = "2"
 
 #node number (get from .txt file)
-f = open('../../NODE_NUM.txt', 'r')
+f = open('/home/pi/NODE_NUM.txt', 'r')
 node  = f.read()
 node_num = int(node)
 

@@ -163,7 +163,7 @@ def getImage():
 
 
     # Send udp packet to image rx program
-    # Sample: NODE3_2017,08,11 12,00,00:CHIAYI_GH:1:3
+    # Sample: NODE3_2017,08,11 12,00,00.jpg:CHIAYI_GH_1:3:1:
     dx=d.strftime("%Y_%m_%d %H_%M_%S")
     filename=dx+".jpg"
     image_packet="NODE"+node+"_"+filename+":"+location+":"+node+":"+db+":"

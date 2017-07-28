@@ -2,20 +2,12 @@
 
 #********************************#
 #********************************#
-#   Common platform WiSN program #
+#   Common platform WSN program #
 #    By: Dan Jeric Arcega Rustia #
 #                                #
 #   Log:                         #
 #   7/20/2017 - added image udp  #
-#   7/5/2017 - added CSV backup  #
-#   6/26/2017 - new program for  #
-#               waterproof design#
-#   5/22/2017 - removed com check#
-#   5/12/2017 - added camera     #
-#   5/5/2017 - added com check   #
-#   3/30/2017 - finished up to   #
-#               temp,hum and lux #
-#             - udp sending      #
+
 #********************************#
 #********************************#
 
@@ -58,6 +50,7 @@ location_cam = "HSINCHU"+"_"+db
 #enable sensors
 s1 = 1
 s2 = 1
+s3 = 1
 
 #db codes where:
 #PD=Pest detect
@@ -69,9 +62,10 @@ db_code = "BD"
 
 dhtg = Adafruit_DHT.AM2302
 dht_pin = 17
+dht_pin2 = 22
 
 #sending delay in seconds
-send_delay=360
+send_delay=5
 
 #csv backup filename
 csv_filename="SENSOR_"+location_cam+"_"+node+".csv"
@@ -81,7 +75,7 @@ csv_filename="SENSOR_"+location_cam+"_"+node+".csv"
 
 #ip address and port
 ip = "140.112.94.128"
-port_udp = 20001
+port_udp = 20021
 
 # Open UDP socket
 sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
@@ -182,8 +176,6 @@ while 1:
     print("Sensor: " + str(send_timer))
     time.sleep(1)
 
-=
-
     if send_timer>=send_delay: 
         print("Querying...")
 
@@ -196,8 +188,8 @@ while 1:
             temp="{0:.2f}".format(temp)
             hum= "{0:.2f}".format(hum)
             if temp is not None and hum is not None:
-                _packet1a=db_code+":ENVI:"+date_stamp+":"+node+":T:"+temp+":"+location+":"+db
-                _packet1b=db_code+":ENVI:"+date_stamp+":"+node+":H:"+hum+":"+location+":"+db
+                _packet1a=db_code+":ENVI:"+date_stamp+":"+node+":T_IN:"+temp+":"+location+":"+db
+                _packet1b=db_code+":ENVI:"+date_stamp+":"+node+":H_IN:"+hum+":"+location+":"+db
                 print(_packet1a)
                 print(_packet1b)
                 text=[db_code,date_stamp,node,"T",temp,location,db]
@@ -205,17 +197,39 @@ while 1:
                 with open(csv_filename, 'ab') as csv_file:
                   writer = csv.writer(csv_file,delimiter=':')
                   writer.writerow(text)
-                  writer.writerow(text2)    
+                  writer.writerow(text2)
         except:
             pass
-        
-            
+
         # get sensor 2 data
+        try:
+            # read sensor data
+            hum, temp= Adafruit_DHT.read_retry(dhtg, dht_pin2)
+
+            # round off to two decimal places
+            temp="{0:.2f}".format(temp)
+            hum= "{0:.2f}".format(hum)
+            if temp is not None and hum is not None:
+                _packet2a=db_code+":ENVI:"+date_stamp+":"+node+":T_OUT:"+temp+":"+location+":"+db
+                _packet2b=db_code+":ENVI:"+date_stamp+":"+node+":H_OUT:"+hum+":"+location+":"+db
+                print(_packet2a)
+                print(_packet2b)
+                text=[db_code,date_stamp,node,"T",temp,location,db]
+                text2=[db_code,date_stamp,node,"H",hum,location,db]                
+                with open(csv_filename, 'ab') as csv_file:
+                  writer = csv.writer(csv_file,delimiter=':')
+                  writer.writerow(text)
+                  writer.writerow(text2)
+        except:
+            pass
+        send_timer=0 
+            
+        # get sensor 3 data
         try:
             lux = readLight()
             lux = "{0:.2f}".format(lux)
-            _packet2a=db_code+":ENVI:"+date_stamp+":"+node+":L:"+lux+":"+location+":"+db
-            print(_packet2a)
+            _packet3a=db_code+":ENVI:"+date_stamp+":"+node+":L:"+lux+":"+location+":"+db
+            print(_packet3a)
             text=[db_code,date_stamp,node,"L",lux,location,db]        
             with open(csv_filename, 'ab') as csv_file:
               writer = csv.writer(csv_file,delimiter=':')
@@ -223,7 +237,7 @@ while 1:
         except:
             pass
 
-        send_timer=0       
+              
 
 
         if db_enable==1:
@@ -237,6 +251,13 @@ while 1:
                 if s2==1:
                     sock.sendto(_packet2a, (ip,port_udp))
                     time.sleep(0.2)
+                    sock.sendto(_packet2b, (ip,port_udp))
+                    time.sleep(0.2)
+                    
+                if s3==1:
+                    sock.sendto(_packet3a, (ip,port_udp))
+                    time.sleep(0.2)
+
 
                 port.reset_input_buffer()                        
             except:

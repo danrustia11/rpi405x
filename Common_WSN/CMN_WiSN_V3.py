@@ -48,12 +48,12 @@ import csv
 db_enable = 1
 
 #node number (get from .txt file)
-f = open('/home/pi/NODE_NUM.txt', 'r')
+f = open('/home/pi/rpi450x/Common_WSN/NODE_NUM.txt', 'r')
 node  = f.read()
 node = node.strip('\n')
 node_num = int(node)
 
-f = open('/home/pi/DB_NUM.txt', 'r')
+f = open('/home/pi//rpi450x/Common_WSN/DB_NUM.txt', 'r')
 db = f.read()
 db = db.strip('\n')
 

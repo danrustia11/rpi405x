@@ -54,7 +54,6 @@ node_num = int(node)
 
 f = open('/home/pi/DB_NUM.txt', 'r')
 db = f.read()
-db = int(db)
 
 #location
 location = "CHIAYI_GH"

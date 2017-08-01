@@ -17,6 +17,6 @@ cd Adafruit_Python_DHT
 sudo python setup.py install
 cd /home/pi
 
-
+mkdir PEST_IMAGES
 
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 sudo apt-get update -y
+sudo apt-get upgrade -y
 sudo apt-get install realvnc-vnc-server realvnc-vnc-viewer -y
 
 cd /home/pi

@@ -47,13 +47,14 @@ import csv
 #enable send to db server function
 db_enable = 1
 
-#db number
-db = "2"
-
 #node number (get from .txt file)
 f = open('/home/pi/NODE_NUM.txt', 'r')
 node  = f.read()
 node_num = int(node)
+
+f = open('/home/pi/DB_NUM.txt', 'r')
+db = f.read()
+db = int(db)
 
 #location
 location = "CHIAYI_GH"

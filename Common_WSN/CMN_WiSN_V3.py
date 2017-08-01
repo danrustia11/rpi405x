@@ -171,9 +171,10 @@ def getImage():
     image_packet="NODE"+node+"_"+filename+":"+location+":"+node+":"+db+":"
 
     # Delay depending on node number:
-    time.sleep(3*node_num)
-    sock.sendto(image_packet, (ip,image_udp))
-    print(image_packet)
+    if db_enable==1:
+    	time.sleep(3*node_num)
+    	sock.sendto(image_packet, (ip,image_udp))
+    	print(image_packet)
 
 
 ##################

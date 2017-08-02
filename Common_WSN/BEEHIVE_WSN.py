@@ -6,8 +6,14 @@
 #    By: Dan Jeric Arcega Rustia #
 #                                #
 #   Log:                         #
-#   7/20/2017 - added image udp  #
-
+#   8/1/2017 - reads db and node #
+#             from txt file      #
+#            - added serial send #
+#             to TK1             #
+#            - optionally, can   #
+#             send independently #
+#             by setting         #
+#             db_enable = 1      #
 #********************************#
 #********************************#
 
@@ -30,18 +36,25 @@ import Adafruit_DHT
 import smbus
 import csv
 
+import serial
+
 #############Options##############
 
 #enable send to db server function
-db_enable = 1
+db_enable = 0
 
 #db number
 db = "10"
 
 #node number (get from .txt file)
-f = open('/home/pi/NODE_NUM.txt', 'r')
+f = open('/home/pi/rpi405x/Common_WSN/NODE_NUM.txt', 'r')
 node  = f.read()
+node = node.strip('\n')
 node_num = int(node)
+
+f = open('/home/pi/rpi405x/Common_WSN/DB_NUM.txt', 'r')
+db  = f.read()
+db = db.strip('\n')
 
 #location
 location = "HSINCHU"
@@ -62,7 +75,7 @@ db_code = "BD"
 
 dhtg = Adafruit_DHT.AM2302
 dht_pin = 17
-dht_pin2 = 22
+dht_pin2 = 27
 
 #sending delay in seconds
 send_delay=5
@@ -79,6 +92,10 @@ port_udp = 20021
 
 # Open UDP socket
 sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+
+# Open UART
+ser = serial.Serial("/dev/ttyS0")
+ser.baudrate=115200
 
 #bh1750 constants
 DEVICE     = 0x23 # Default device I2C address
@@ -144,8 +161,6 @@ send_timer=send_delay
 time.sleep(1)
 
 
-
-
 ##################
 #       END      #
 ##################
@@ -173,7 +188,7 @@ while 1:
     ###########################
 
     send_timer=send_timer+1
-    print("Sensor: " + str(send_timer))
+    print("(TIMERS) Sensor: " + str(send_timer))
     time.sleep(1)
 
     if send_timer>=send_delay: 
@@ -192,6 +207,8 @@ while 1:
                 _packet1b=db_code+":ENVI:"+date_stamp+":"+node+":H_IN:"+hum+":"+location+":"+db
                 print(_packet1a)
                 print(_packet1b)
+                ser.write(_packet1a+"\n")
+                ser.write(_packet1b+"\n")
                 text=[db_code,date_stamp,node,"T",temp,location,db]
                 text2=[db_code,date_stamp,node,"H",hum,location,db]                
                 with open(csv_filename, 'ab') as csv_file:
@@ -214,6 +231,8 @@ while 1:
                 _packet2b=db_code+":ENVI:"+date_stamp+":"+node+":H_OUT:"+hum+":"+location+":"+db
                 print(_packet2a)
                 print(_packet2b)
+                ser.write(_packet2a+"\n")
+                ser.write(_packet2b+"\n")
                 text=[db_code,date_stamp,node,"T",temp,location,db]
                 text2=[db_code,date_stamp,node,"H",hum,location,db]                
                 with open(csv_filename, 'ab') as csv_file:
@@ -222,7 +241,7 @@ while 1:
                   writer.writerow(text2)
         except:
             pass
-        send_timer=0 
+        
             
         # get sensor 3 data
         try:
@@ -230,12 +249,15 @@ while 1:
             lux = "{0:.2f}".format(lux)
             _packet3a=db_code+":ENVI:"+date_stamp+":"+node+":L:"+lux+":"+location+":"+db
             print(_packet3a)
+            ser.write(_packet3a+"\n")
             text=[db_code,date_stamp,node,"L",lux,location,db]        
             with open(csv_filename, 'ab') as csv_file:
               writer = csv.writer(csv_file,delimiter=':')
               writer.writerow(text)
         except:
             pass
+
+        send_timer=0 
 
               
 
@@ -262,7 +284,3 @@ while 1:
                 port.reset_input_buffer()                        
             except:
                 pass
-
-             
-            
-      

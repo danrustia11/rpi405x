@@ -258,10 +258,10 @@ while 1:
     send_timer=send_timer+1
     gather_timer=gather_timer+1
     
-    print("(TIMERS) Samples: " + str(samples) + 
-          " Sensor: " + str(send_timer) + 
-          "  Camera: " + str(hr) + ":" + str(mn) + ":" + str(sec)) +
-          " DB: " + str(db) + 
+    print("(TIMERS) Samples: " + str(samples) + \
+          " Sensor: " + str(send_timer) + \
+          "  Camera: " + str(hr) + ":" + str(mn) + ":" + str(sec)) + \
+          " DB: " + str(db) + \
           " Node: " + str(node)
     time.sleep(1)
 

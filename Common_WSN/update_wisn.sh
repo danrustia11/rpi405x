@@ -32,4 +32,4 @@ cat > run_wisn.sh <<- EOF
 python /home/pi/rpi405x/Common_WSN/$input_variable
 EOF
 
-./edit_startup.sh
+sudo cp /home/pi/rpi405x/Common_WSN/autostart /home/pi/.config/lxsession/LXDE-pi/autostart

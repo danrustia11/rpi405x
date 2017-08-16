@@ -5,3 +5,20 @@ cd
 git clone https://github.com/danrustia11/rpi405x
 cd /home/pi/rpi405x/Common_WSN
 sudo chmod u+x *.sh
+
+
+echo "Please enter node number:"
+read input_variable
+echo "New node number: $input_variable"
+
+cat > NODE_NUM.txt <<- EOF
+    $input_variable
+EOF
+
+echo "Please enter DB number:"
+read input_variable
+echo "New DB number: $input_variable"
+
+cat > DB_NUM.txt <<- EOF
+    $input_variable
+EOF

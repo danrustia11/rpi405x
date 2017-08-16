@@ -31,3 +31,5 @@ cat > run_wisn.sh <<- EOF
 #!/bin/bash
 python /home/pi/rpi405x/Common_WSN/$input_variable
 EOF
+
+./edit_startup.sh

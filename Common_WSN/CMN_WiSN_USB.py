@@ -92,7 +92,7 @@ csv_filename="SENSOR_"+location_cam+"_"+node+".csv"
 # Do not touch the codes below! #
 
 #ip address and port
-ip = "140.112.187.103"
+ip = "140.112.94.128"
 port_udp = 20001
 image_udp = 20001
 

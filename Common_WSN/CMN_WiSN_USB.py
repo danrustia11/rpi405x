@@ -52,8 +52,8 @@ db = f.read()
 db = db.strip('\n')
 
 #location
-location = "TEST"
-location_cam = "TEST"+"_"+db
+location = "NTU_GH"
+location_cam = "NTU_GH"+"_"+db
 
 #db codes where:
 #PD=Pest detect

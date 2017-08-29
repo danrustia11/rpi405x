@@ -6,6 +6,7 @@
 #    By: Dan Jeric Arcega Rustia #
 #                                #
 #   Log:                         #
+#   8/29/2017 - txt file enable  #
 #   8/3/2017 - added averaging   #
 #   7/20/2017 - added image udp  #
 #   7/5/2017 - added CSV backup  #
@@ -47,7 +48,9 @@ import csv
 #############Options##############
 
 #enable send to db server function
-db_enable = 0
+f = open('/home/pi/rpi405x/Common_WSN/DB_ENABLE.txt', 'r')
+db_enable  = f.read()
+db_enable = int(db_enable)
 
 #node number (get from .txt file)
 f = open('/home/pi/rpi405x/Common_WSN/NODE_NUM.txt', 'r')

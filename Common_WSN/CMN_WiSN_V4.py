@@ -65,7 +65,7 @@ db = db.strip('\n')
 #location
 f = open('/home/pi//rpi405x/Common_WSN/LOCATION.txt', 'r')
 location = f.read()
-location = db.strip('\n')
+location = location.strip('\n')
 location_cam = location+"_"+db
 
 #enable sensors

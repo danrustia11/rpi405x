@@ -63,8 +63,10 @@ db = f.read()
 db = db.strip('\n')
 
 #location
-location = "CHIAYI_GH"
-location_cam = "CHIAYI_GH"+"_"+db
+f = open('/home/pi//rpi405x/Common_WSN/LOCATION.txt', 'r')
+location = f.read()
+location = db.strip('\n')
+location_cam = location+"_"+db
 
 #enable sensors
 s1 = 1

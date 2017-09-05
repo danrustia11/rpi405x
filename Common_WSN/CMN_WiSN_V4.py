@@ -109,7 +109,7 @@ image_udp = 20002
 sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
 # file transfer url
-url='http://140.112.94.128:20000/PEST_DETECT/PEST_IMAGES/RX_IMG.php?node='+node+'&location='+location_cam
+url='http://140.112.94.128:10000/PEST_DETECT/PEST_IMAGES/RX_IMG.php?node='+node+'&location='+location_cam
 
 # camera settings
 camera = PiCamera()

@@ -6,25 +6,6 @@ git clone https://github.com/danrustia11/rpi405x
 cd /home/pi/rpi405x/Common_WSN
 sudo chmod u+x *.sh
 
-echo "Autorun which WSN/WiSN program? i.e. CMN_WiSN_USB.py"
-echo "a: CMN_WiSN_USB.py - USB-based WiSN 2.0"
-echo "b: CMN_WiSN_V4.py - WiSN 3.0 "
-read input_file
-
-if [ "$input_file" == "a" ] || [ "$input_file" == "A" ]; then
-  input_variable="CMN_WiSN_USB.py"
-elif [ "$input_file" == "b" ] || [ "$input_file" == "B" ]; then
-  input_variable="CMN_WiSN_USB.py"
-else
-  echo "Please enter a letter!!"
-  
-echo "Autorun program: $input_variable"
-
-cat > run_wisn.sh <<- EOF
-#!/bin/bash
-python /home/pi/rpi405x/Common_WSN/$input_variable
-EOF
-
 
 
 
@@ -60,13 +41,45 @@ EOF
 
 
 echo "Please enter experiment location:"
-read input_variable
+echo "a: NTU_GH"
+echo "b: NTU_GH"
+read input_loc
+
+if [ "$input_loc" == "a" ] || [ "$input_loc" == "A" ]; then
+  input_variable="NTU_GH"
+elif [ "$input_loc" == "b" ] || [ "$input_loc" == "B" ]; then
+  input_variable="CHIAYI_GH"
+else
+  echo "Please enter a letter!!"
+fi
+  
+
 echo "New experiment location: $input_variable"
 cat > LOCATION.txt <<- EOF
 $input_variable
 EOF
 
 
+
+echo "Autorun which WSN/WiSN program? i.e. CMN_WiSN_USB.py"
+echo "a: CMN_WiSN_USB.py - USB-based WiSN 2.0"
+echo "b: CMN_WiSN_V4.py - WiSN 3.0 "
+read input_file
+
+if [ "$input_file" == "a" ] || [ "$input_file" == "A" ]; then
+  input_variable="CMN_WiSN_USB.py"
+elif [ "$input_file" == "b" ] || [ "$input_file" == "B" ]; then
+  input_variable="CMN_WiSN_USB.py"
+else
+  echo "Please enter a letter!!"
+fi
+  
+echo "Autorun program: $input_variable"
+
+cat > run_wisn.sh <<- EOF
+#!/bin/bash
+python /home/pi/rpi405x/Common_WSN/$input_variable
+EOF
 
 
 sudo cp /home/pi/rpi405x/Common_WSN/autostart /home/pi/.config/lxsession/LXDE-pi/autostart

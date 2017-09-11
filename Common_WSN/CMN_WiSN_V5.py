@@ -186,33 +186,17 @@ def getImage():
     # Send udp packet to image rx program
     # Sample: NODE3_2017,08,11 12,00,00.jpg:CHIAYI_GH_1:3:1:
     dx=d.strftime("%Y_%m_%d %H_%M_%S")
-    filename=dx+".jpg"
-    image_packet="INSECT:" + \ 
-                str(node) + \
-                str(location) + \
-                str(db) + \
-                str(filename)
+    filename= "NODE" + str(node) + dx+".jpg"
+    image_packet="INSECT:" +  str(node) + ":" +  str(location) + ":" +  str(db) + ":" + str(filename) + ":" 
     
     #image_packet="NODE"+node+"_"+filename+":"+location+":"+node+":"+db+":"
+    print(image_packet)
 
     # Delay depending on node number:
     if db_enable==1:
-        time.sleep(3*node_num)
         sock.sendto(image_packet, (ip,image_udp))
             
 
-
-    # Send udp packet to image rx program
-    # Sample: NODE3_2017,08,11 12,00,00.jpg:CHIAYI_GH_1:3:1:
-    dx=d.strftime("%Y_%m_%d %H_%M_%S")
-    filename=dx+".jpg"
-    image_packet="NODE"+node+"_"+filename+":"+location+":"+node+":"+db+":"
-
-    # Delay depending on node number:
-    if db_enable==1:
-        time.sleep(3*node_num)
-        sock.sendto(image_packet, (ip,image_udp))
-        print(image_packet)
 
 
 ##################

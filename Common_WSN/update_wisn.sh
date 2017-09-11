@@ -6,12 +6,10 @@ git clone https://github.com/danrustia11/rpi405x
 cd /home/pi/rpi405x/Common_WSN
 sudo chmod u+x *.sh
 
-while [$input_file != "a"] || [$input_file != "A"] || [$input_file != "b"] || [$input_file != "B"] 
-do
 echo "Autorun which WSN/WiSN program? i.e. CMN_WiSN_USB.py"
-echo "CMN_WiSN_USB.py - USB-based WiSN 2.0"
-echo "CMN_WiSN_V4.py - WiSN 3.0 "
-read input_variable
+echo "a: CMN_WiSN_USB.py - USB-based WiSN 2.0"
+echo "b: CMN_WiSN_V4.py - WiSN 3.0 "
+read input_file
 
 if ["$input_file" == "a"] || ["$input_file" == "A"]
 then
@@ -21,8 +19,8 @@ then
   input_variable = CMN_WiSN_USB.py
 else
 then
-  echo "Please enter a letter!"
-done
+  echo "Please enter a letter!!"
+
 
 cat > run_wisn.sh <<- EOF
 #!/bin/bash

@@ -13,18 +13,20 @@ read input_file
 
 if ["$input_file" == "a"] || ["$input_file" == "A"]
 then
-  input_variable = CMN_WiSN_USB.py
+  input_variable = "CMN_WiSN_USB.py"
 elif ["$input_file" == "b"] || ["$input_file" == "B"]
 then
-  input_variable = CMN_WiSN_USB.py
+  input_variable = "CMN_WiSN_USB.py"
 else
   echo "Please enter a letter!!"
-
 
 cat > run_wisn.sh <<- EOF
 #!/bin/bash
 python /home/pi/rpi405x/Common_WSN/$input_variable
 EOF
+
+
+
 
 echo "Enable db sending? (0/1):"
 read input_variable
@@ -33,12 +35,19 @@ cat > DB_ENABLE.txt <<- EOF
 $input_variable
 EOF
 
+
+
+
+
 echo "Please enter node number:"
 read input_variable
 echo "New node number: $input_variable"
 cat > NODE_NUM.txt <<- EOF
 $input_variable
 EOF
+
+
+
 
 echo "Please enter DB number:"
 read input_variable
@@ -47,14 +56,15 @@ cat > DB_NUM.txt <<- EOF
 $input_variable
 EOF
 
+
+
+
 echo "Please enter experiment location:"
 read input_variable
 echo "New experiment location: $input_variable"
 cat > LOCATION.txt <<- EOF
 $input_variable
 EOF
-
-
 
 
 

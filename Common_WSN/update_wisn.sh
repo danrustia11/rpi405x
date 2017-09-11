@@ -6,6 +6,29 @@ git clone https://github.com/danrustia11/rpi405x
 cd /home/pi/rpi405x/Common_WSN
 sudo chmod u+x *.sh
 
+while [$input_file != "a"] || [$input_file != "A"] || [$input_file != "b"] || [$input_file != "B"] 
+do
+echo "Autorun which WSN/WiSN program? i.e. CMN_WiSN_USB.py"
+echo "CMN_WiSN_USB.py - USB-based WiSN 2.0"
+echo "CMN_WiSN_V4.py - WiSN 3.0 "
+read input_variable
+
+if ["$input_file" == "a"] || ["$input_file" == "A"]
+then
+  input_variable = CMN_WiSN_USB.py
+elif ["$input_file" == "b"] || ["$input_file" == "B"]
+then
+  input_variable = CMN_WiSN_USB.py
+else
+then
+  echo "Please enter a letter!"
+done
+
+cat > run_wisn.sh <<- EOF
+#!/bin/bash
+python /home/pi/rpi405x/Common_WSN/$input_variable
+EOF
+
 echo "Enable db sending? (0/1):"
 read input_variable
 echo "DB Enabled: $input_variable"
@@ -35,14 +58,8 @@ $input_variable
 EOF
 
 
-echo "Autorun which WSN/WiSN program? i.e. CMN_WiSN_USB.py"
-echo "CMN_WiSN_USB.py - USB-based WiSN 2.0"
-echo "CMN_WiSN_V4.py - WiSN 3.0 "
-read input_variable
 
-cat > run_wisn.sh <<- EOF
-#!/bin/bash
-python /home/pi/rpi405x/Common_WSN/$input_variable
-EOF
+
+
 
 sudo cp /home/pi/rpi405x/Common_WSN/autostart /home/pi/.config/lxsession/LXDE-pi/autostart

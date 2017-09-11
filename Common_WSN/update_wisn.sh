@@ -18,7 +18,6 @@ elif ["$input_file" == "b"] || ["$input_file" == "B"]
 then
   input_variable = CMN_WiSN_USB.py
 else
-then
   echo "Please enter a letter!!"
 
 

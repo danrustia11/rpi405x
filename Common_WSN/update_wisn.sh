@@ -65,14 +65,17 @@ echo "Autorun which WSN/WiSN program? i.e. CMN_WiSN_USB.py"
 echo "a: CMN_WiSN_USB.py - USB-based WiSN 2.0"
 echo "b: CMN_WiSN_V4.py - WiSN 3.0 with Qt SVM ML"
 echo "c: CMN_WiSN_V5.py - WiSN 3.0 with Python Inception DL"
+echo "d: CMN_WiSN_THLP_V1.py - WiSN 4.0 with BME280 TH sensor"
 read input_file
 
 if [ "$input_file" == "a" ] || [ "$input_file" == "A" ]; then
   input_variable="CMN_WiSN_USB.py"
   elif [ "$input_file" == "b" ] || [ "$input_file" == "B" ]; then
   input_variable="CMN_WiSN_V4.py"
-elif [ "$input_file" == "c" ] || [ "$input_file" == "C" ]; then
+  elif [ "$input_file" == "c" ] || [ "$input_file" == "C" ]; then
   input_variable="CMN_WiSN_V5.py"
+  elif [ "$input_file" == "c" ] || [ "$input_file" == "C" ]; then
+  input_variable="CMN_WiSN_THLP_V1.py"
 else
   echo "Please enter a letter!!"
 fi

@@ -6,6 +6,8 @@
 #    By: Dan Jeric Arcega Rustia #
 #                                #
 #   Log:                         #
+#   9/26/2017 - changed to       #
+#               BME280 sensor    #
 #   8/29/2017 - txt file enable  #
 #   8/3/2017 - added averaging   #
 #   7/20/2017 - added image udp  #
@@ -40,7 +42,9 @@ from urllib import urlencode
 import os
 
 #sensor libraries
-import Adafruit_DHT
+import bme280
+#deprecated as of 9/26/2017:
+#import Adafruit_DHT 
 import smbus
 import csv
 
@@ -80,8 +84,8 @@ s2 = 1
 #H=Home envi
 db_code = "PD"
 
-dhtg = Adafruit_DHT.AM2302
-dht_pin = 17
+#dhtg = Adafruit_DHT.AM2302
+#dht_pin = 17
 
 #sending delay in seconds
 send_delay=360
@@ -144,6 +148,9 @@ ONE_TIME_LOW_RES_MODE = 0x23
  
 #bus = smbus.SMBus(0) # Rev 1 Pi uses 0
 bus = smbus.SMBus(1)  # Rev 2 Pi uses 1
+
+#bme280 constant
+bme280_address = 0x76
 
 
 def convertToNumber(data):
@@ -231,7 +238,7 @@ else:
 send_timer=send_delay
 time.sleep(1)
 
-
+bme280.load_calibration_params(bus, bme280_address)
 getImage()
 
 ##################
@@ -274,8 +281,15 @@ while 1:
     # Data gathering function
     if gather_delay <= gather_timer:
         # Get hum temp reading
-        hum, temp= Adafruit_DHT.read_retry(dhtg, dht_pin)
+        #deprecated:
+        #hum, temp= Adafruit_DHT.read_retry(dhtg, dht_pin)
 
+        data = bme280.sample(bus, bme280_address)
+        temp = round(data.temperature,2)
+        hum = round(data.humidity,2)
+        pres = round(data.pressure,2)
+
+    
         # Get lux reading
         lux = readLight()
 

@@ -97,6 +97,7 @@ samples=0
 temp_samples=[0]*100
 hum_samples=[0]*100
 lux_samples=[0]*100
+pres_samples=[0]*100
 
 #csv backup filename
 csv_filename="SENSOR_"+location_cam+"_"+node+".csv"
@@ -297,11 +298,13 @@ while 1:
         temp_samples[samples]=temp
         hum_samples[samples]=hum
         lux_samples[samples]=lux
+        pres_samples[samples]=pres
 
                   
         print "(T) " + str(temp_samples[samples])
         print "(H) " + str(hum_samples[samples])
         print "(L) " + str(lux_samples[samples])
+        print "(P) " + str(pres_samples[samples])
         
 
         if (temp_samples[samples] <= 50 and hum_samples[samples] <= 100 and hum_samples[samples] >= 30):
@@ -333,6 +336,7 @@ while 1:
             # get the average of sensors
             temp = sum(temp_samples)/samples
             hum = sum(hum_samples)/samples
+            pres = sum(pres_samples)/samples
 
             # get median
             #temp = statistics.median(temp_samples)
@@ -341,22 +345,28 @@ while 1:
             # clear array
             temp_samples=[0]*100
             hum_samples=[0]*100
+            pres_samples=[0]*100
 
             # round off to two decimal places
             temp="{0:.2f}".format(temp)
             hum= "{0:.2f}".format(hum)
+            pres= "{0:.2f}".format(pres)
             
             if temp is not None and hum is not None:
                 _packet1a=db_code+":ENVI:"+date_stamp+":"+node+":T:"+temp+":"+location+":"+db
                 _packet1b=db_code+":ENVI:"+date_stamp+":"+node+":H:"+hum+":"+location+":"+db
+                _packet1c=db_code+":ENVI:"+date_stamp+":"+node+":P:"+hum+":"+location+":"+db
                 print(_packet1a)
                 print(_packet1b)
+                print(_packet1c)
                 text=[db_code,date_stamp,node,"T",temp,location,db]
-                text2=[db_code,date_stamp,node,"H",hum,location,db]                
+                text2=[db_code,date_stamp,node,"H",hum,location,db]
+                text3=[db_code,date_stamp,node,"P",pres,location,db]                
                 with open(csv_filename, 'ab') as csv_file:
                   writer = csv.writer(csv_file,delimiter=':')
                   writer.writerow(text)
-                  writer.writerow(text2)    
+                  writer.writerow(text2)
+                  writer.writerow(text3)    
         except:
             pass
         

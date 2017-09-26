@@ -74,7 +74,7 @@ if [ "$input_file" == "a" ] || [ "$input_file" == "A" ]; then
   input_variable="CMN_WiSN_V4.py"
   elif [ "$input_file" == "c" ] || [ "$input_file" == "C" ]; then
   input_variable="CMN_WiSN_V5.py"
-  elif [ "$input_file" == "c" ] || [ "$input_file" == "C" ]; then
+  elif [ "$input_file" == "d" ] || [ "$input_file" == "D" ]; then
   input_variable="CMN_WiSN_THLP_V1.py"
 else
   echo "Please enter a letter!!"

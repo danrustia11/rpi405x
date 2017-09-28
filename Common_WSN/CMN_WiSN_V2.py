@@ -6,6 +6,7 @@
 #    By: Dan Jeric Arcega Rustia #
 #                                #
 #   Log:                         #
+#   9/28/2017 - universal code   #
 #   7/5/2017 - added CSV backup  #
 #   6/26/2017 - new program for  #
 #               waterproof design#
@@ -44,7 +45,7 @@ import csv
 #############Options##############
 
 #enable send to db server function
-db_enable = 1
+db_enable = 0
 
 #db number
 db = "10"
@@ -68,6 +69,8 @@ s2 = 1
 #H=Home envi
 db_code = "PD"
 
+
+# dht sensor constants
 dhtg = Adafruit_DHT.AM2302
 dht_pin = 17
 
@@ -80,15 +83,26 @@ csv_filename="SENSOR_"+location_cam+"_"+node+".csv"
 #################################
 # Do not touch the codes below! #
 
-#ip address and port
-ip = "140.112.94.128"
-port_udp = 20001
+
+#image directory
+if db_code=="CF":
+ image_dir = "/home/pi/COW_IMAGES/"
+ os.mkdir(image_dir, 0755);
+ port_udp = 30001
+if db_code=="PD":
+ image_dir = "/home/pi/PEST_IMAGES/"
+ os.mkdir(image_dir, 0755);
+ port_udp = 20001
+ 
+ip = "140.112.94.123" 
+ 
 
 # Open UDP socket
 sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
 # file transfer url
-url='http://140.112.94.128:20000/PEST_DETECT/PEST_IMAGES/RX_IMG.php?node='+node+'&location='+location_cam
+# url='http://140.112.94.123:20000/PEST_DETECT/PEST_IMAGES/RX_IMG.php?node='+node+'&location='+location_cam
+# url='http://140.112.94.123:30000/DAIRY_COW/COW_IMAGES/RX_IMG.php?node='+node+'&location='+location_cam
 
 # camera settings
 camera = PiCamera()
@@ -146,15 +160,15 @@ def getImage():
     dx=d.strftime("%Y,%m,%d %H,%M,%S")
     
     print("Image captured!")
-    locationx="/home/pi/PEST_IMAGES/"+dx+".jpg"
+    locationx = image_dir+str(dx)+".jpg"
     print(locationx)
     filename=dx+".jpg"
     camera.capture(locationx)
 
-    f = open(locationx,'rb')
-    files = {'file':f}
-    r=requests.post(url,files=files)
-    print(r.content)
+    #f = open(locationx,'rb')
+    #files = {'file':f}
+    #r=requests.post(url,files=files)
+    #print(r.content)
 
 
 ##################

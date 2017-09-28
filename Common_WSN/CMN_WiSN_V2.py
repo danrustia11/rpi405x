@@ -20,7 +20,10 @@
 #********************************#
 
 import subprocess
-subprocess.call(['/home/pi/RPi_Cam_Web_Interface/stop.sh'])
+try:
+  subprocess.call(['/home/pi/RPi_Cam_Web_Interface/stop.sh'])
+except:
+  pass
 
 #libraries
 import time
@@ -67,7 +70,7 @@ s2 = 1
 #PF=Plant factory
 #CF=Cow farm
 #H=Home envi
-db_code = "PD"
+db_code = "CF"
 
 
 # dht sensor constants
@@ -86,13 +89,19 @@ csv_filename="SENSOR_"+location_cam+"_"+node+".csv"
 
 #image directory
 if db_code=="CF":
- image_dir = "/home/pi/COW_IMAGES/"
- os.mkdir(image_dir, 0755);
- port_udp = 30001
+  try:
+    image_dir = "/home/pi/COW_IMAGES/"
+    os.mkdir(image_dir, 0755);
+  except:
+    pass
+  port_udp = 30001
 if db_code=="PD":
- image_dir = "/home/pi/PEST_IMAGES/"
- os.mkdir(image_dir, 0755);
- port_udp = 20001
+  try:
+    image_dir = "/home/pi/PEST_IMAGES/"
+    os.mkdir(image_dir, 0755);
+  except:
+    pass
+  port_udp = 20001
  
 ip = "140.112.94.123" 
  
